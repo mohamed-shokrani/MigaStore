@@ -1,5 +1,5 @@
-using DataProject.Data;
 using Microsoft.EntityFrameworkCore;
+using SharedProject.Data;
 using WebApp;
 
 var builder = WebApplication.CreateBuilder(args);

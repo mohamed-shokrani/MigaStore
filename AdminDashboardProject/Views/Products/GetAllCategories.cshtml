@@ -1,0 +1,27 @@
+﻿@model IReadOnlyCollection<Category>;
+<a class="btn btn-success" asp-action="New" asp-controller="Products">New</a>
+<div class="container">
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <td>Name</td>
+                <td>_</td>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td><a class="btn btn-warning">Update</a> <a class="btn btn-danger">Remove</a></td>
+
+
+
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>

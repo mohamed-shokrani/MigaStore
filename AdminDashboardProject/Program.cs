@@ -1,11 +1,13 @@
-using DataProject.Data;
+using SharedProject.Data;
 using Microsoft.EntityFrameworkCore;
+using SharedProject.Interfaces;
+using SharedProject.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddDbContext<AppDbContext>(options=>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
 // Configure the HTTP request pipeline.

@@ -1,0 +1,29 @@
+﻿@model IReadOnlyCollection<ProductViewModel>
+<a asp-action="New" asp-controller="Products">New</a>
+<div class="container">
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <td>Name</td>
+            <td>Description</td>
+            <td>Price</td>
+            <td>Category</td>
+
+        </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model)
+            {
+                <tr >
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>@item.Price</td>
+                    <td>@item.CategoryName</td>
+
+
+                </tr>
+            }
+        </tbody>
+       
+    </table>
+</div>
