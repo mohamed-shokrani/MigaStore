@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SharedProject.Data;
 
@@ -11,9 +12,11 @@ using SharedProject.Data;
 namespace SharedProject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240403024853_AddDescription")]
+    partial class AddDescription
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,6 +169,9 @@ namespace SharedProject.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ProdcutId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
@@ -260,13 +266,11 @@ namespace SharedProject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SharedProject.Models.ProductLongDescription", "ProductLongDescription")
+                    b.HasOne("SharedProject.Models.ProductLongDescription", null)
                         .WithMany("Images")
                         .HasForeignKey("ProductLongDescriptionId");
 
                     b.Navigation("Product");
-
-                    b.Navigation("ProductLongDescription");
                 });
 
             modelBuilder.Entity("SharedProject.Models.ProductLongDescription", b =>

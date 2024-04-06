@@ -17,11 +17,11 @@ public class Product
 
     public int  Quantity { get; set; }
     [Required]
-
+    public string Model { get; set; } = string.Empty;
+  
     public string MediumDescription { get; set; } = string.Empty;
     [Required]
 
-    public string ImagePath { get; set; } = string.Empty;  
     public int CategoryId { get; set; }
     public long Views { get; set; }
 
@@ -30,9 +30,8 @@ public class Product
     public int BrandId { get; set; }
 
     public Brand Brand { get; set; } 
-    public int ModelId { get; set; }
+   
 
-    public Model Model { get; set; }
     public int SellerId { get; set; }
 
     public ICollection<Seller> Sellers { get; set; }

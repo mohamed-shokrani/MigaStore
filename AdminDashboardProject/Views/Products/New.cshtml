@@ -1,32 +1,73 @@
 ﻿@using SharedProject.ViewModels.Prodcuts
 @model ProductViewModel;
-<form asp-action="New" method="post">
+<link rel="stylesheet" href="~/css/product/new.css" />
+<form asp-action="New" method="post" enctype="multipart/form-data" >
 
-    <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
-        <strong asp-validation-for="product.Name" class="text-danger"></strong>
-    </div>
-    <div class="form-group">
-        <label asp-for="CategoryId"></label>
-    <select asp-for="CategoryId" class="form-control" asp-items='new SelectList(Model.Categories, "Id", "Name")'>
-    <option value="">Select Category</option>
-    </select>
-   
-    </div>
-    <div  class="form-group">
-        <label asp-for="BrandId"></label>
-        <select asp-for="BrandId" asp-items='new SelectList(Model.Brands,"Id","Name")' class="form-control">
-            <option value="">Select Brand</option>
+   <div class=" row d-flex">
+        <div class="form-group col-3">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group col-3">
+            <label asp-for="Model"></label>
+            <input asp-for="Model" class="form-control" />
+            <strong asp-validation-for="Model" class="text-danger"></strong>
+        </div>
+        <div class="form-group col-3">
+            <label asp-for="Quantity"></label>
+            <input asp-for="Quantity" class="form-control" type="number" />
+            <span asp-validation-for="Quantity" class="text-danger"></span>
+        </div>
+        <div class="form-group col-3">
+            <label asp-for="Price"></label>
+            <input asp-for="Price" class="form-control" type="number" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+        <div class="form-group col-3">
+            <label asp-for="Description"></label>
+            <input asp-for="Description" class="form-control" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group col-3">
+            <label asp-for="MediumDescription"></label>
+            <input asp-for="MediumDescription" class="form-control" />
+            <span  asp-validation-for="MediumDescription" class="text-danger"></span>
+        </div>
+        <div class="form-group  col-3">
+            <label asp-for="CategoryId"></label>
+            <select asp-for="CategoryId" class="form-control" asp-items='new SelectList(Model.Categories, "Id", "Name")'>
+                <option value="">Select Category</option>
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
 
-        </select>
-    </div>
-    <div class="form-group">
-        <label asp-for="SellerId"></label>
-        <select asp-for="SellerId" class="form-control" asp-items='new SelectList(Model.Sellers,"Id","Name")'>
-            <option value="">Select Seller</option>
+        </div>
+        <div class="form-group col-3">
+            <label asp-for="BrandId"></label>
+            <select asp-for="BrandId" asp-items='new SelectList(Model.Brands,"Id","Name")' class="form-control">
+                <option value="">Select Brand</option>
 
-        </select>
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
 
-    </div>
+        </div>
+        <div class="form-group col-3">
+            <label asp-for="SellerId"></label>
+            <select asp-for="SellerId" class="form-control" asp-items='new SelectList(Model.Sellers,"Id","Name")'>
+                <option value="">Select Seller</option>
+
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+
+        </div>
+        <div class="form-group col-12">
+            <div id="images-array" class="img-arr"></div>
+            <input type="file" hidden id="upload-method" multiple asp-for="ProductImages" />
+            <button class="btn btn-dark d-block mt-5" id="upload-images"> Upload  Image or multiple</button>
+        </div>
+        <input type="submit" value="Save" class="btn btn-success"/>
+   </div>
 </form>
+@section Scripts{
+    <script  src="~/js/product/JavaScript.js"></script>
+}

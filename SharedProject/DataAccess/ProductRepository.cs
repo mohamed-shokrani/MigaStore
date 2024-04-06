@@ -8,7 +8,7 @@ using SharedProject.ViewModels.Prodcuts;
 namespace SharedProject.DataAccess;
 public class ProductRepository : GenericRepository<Product> ,IProductRepository
 {
-    protected AppDbContext _context;
+    protected new AppDbContext _context;
     public ProductRepository(AppDbContext context) : base(context)
     {
         _context = context;

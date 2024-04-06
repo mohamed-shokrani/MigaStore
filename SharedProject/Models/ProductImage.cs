@@ -8,4 +8,6 @@ public class ProductImage
 
     public Product Product { get; set; }
 
+    public ProductLongDescription? ProductLongDescription  { get; set; }
+
 }

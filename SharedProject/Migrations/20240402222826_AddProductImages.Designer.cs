@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SharedProject.Data;
 
@@ -11,9 +12,11 @@ using SharedProject.Data;
 namespace SharedProject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240402222826_AddProductImages")]
+    partial class AddProductImages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,6 +74,62 @@ namespace SharedProject.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("SharedProject.Models.LongDescription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LongDescriptions");
+                });
+
+            modelBuilder.Entity("SharedProject.Models.LongDescriptionImage", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int?>("LongDescriptionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LongDescriptionId");
+
+                    b.ToTable("LongDescriptionImages");
+                });
+
+            modelBuilder.Entity("SharedProject.Models.Model", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Models");
+                });
+
             modelBuilder.Entity("SharedProject.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -94,9 +153,8 @@ namespace SharedProject.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ModelId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -121,6 +179,8 @@ namespace SharedProject.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("ModelId");
+
                     b.ToTable("Products");
                 });
 
@@ -142,38 +202,11 @@ namespace SharedProject.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProductLongDescriptionId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("ProductLongDescriptionId");
 
                     b.ToTable("ProductImages");
-                });
-
-            modelBuilder.Entity("SharedProject.Models.ProductLongDescription", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("FullDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductLongDescription");
                 });
 
             modelBuilder.Entity("SharedProject.Models.Review", b =>
@@ -233,6 +266,13 @@ namespace SharedProject.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SharedProject.Models.LongDescriptionImage", b =>
+                {
+                    b.HasOne("SharedProject.Models.LongDescription", null)
+                        .WithMany("LongDescriptionImages")
+                        .HasForeignKey("LongDescriptionId");
+                });
+
             modelBuilder.Entity("SharedProject.Models.Product", b =>
                 {
                     b.HasOne("SharedProject.Models.Brand", "Brand")
@@ -247,32 +287,23 @@ namespace SharedProject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SharedProject.Models.Model", "Model")
+                        .WithMany("Products")
+                        .HasForeignKey("ModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Brand");
 
                     b.Navigation("Category");
+
+                    b.Navigation("Model");
                 });
 
             modelBuilder.Entity("SharedProject.Models.ProductImage", b =>
                 {
                     b.HasOne("SharedProject.Models.Product", "Product")
                         .WithMany("ProductImages")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SharedProject.Models.ProductLongDescription", "ProductLongDescription")
-                        .WithMany("Images")
-                        .HasForeignKey("ProductLongDescriptionId");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("ProductLongDescription");
-                });
-
-            modelBuilder.Entity("SharedProject.Models.ProductLongDescription", b =>
-                {
-                    b.HasOne("SharedProject.Models.Product", "Product")
-                        .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -285,14 +316,19 @@ namespace SharedProject.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("SharedProject.Models.LongDescription", b =>
+                {
+                    b.Navigation("LongDescriptionImages");
+                });
+
+            modelBuilder.Entity("SharedProject.Models.Model", b =>
+                {
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("SharedProject.Models.Product", b =>
                 {
                     b.Navigation("ProductImages");
-                });
-
-            modelBuilder.Entity("SharedProject.Models.ProductLongDescription", b =>
-                {
-                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }
