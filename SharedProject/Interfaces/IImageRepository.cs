@@ -6,5 +6,5 @@ using SharedProject.ViewModels.ProductModel;
 namespace SharedProject.Interfaces;
 public interface IImageRepository :IGenericRepository<ProductImage>
 {
-    Task<List<ProductImageVM>> CreateProductImages(IEnumerable<IFormFile> files,string wwwrooPath);
+    Task<List<ProductImageVM>> CreateProductImages(IEnumerable<IFormFile> files,string wwwrooPath, string fileSettingImagePath);
 }

@@ -22,13 +22,13 @@ public class ImageRepository : GenericRepository<ProductImage> ,IImageRepository
      
     }
    
-    public async Task<List<ProductImageVM>> CreateProductImages(IEnumerable<IFormFile> files,string wwwrootPath)
+    public async Task<List<ProductImageVM>> CreateProductImages(IEnumerable<IFormFile> files,string wwwrootPath,string fileSettingImagePath)
     {
         if (!files.Any() )
         {
             return [];
         }
-        string _serverPath = $"{wwwrootPath}{FileSetting.ImagePath}";
+        string _serverPath = $"{wwwrootPath}{fileSettingImagePath}";
         var ImagesCollection = new List<ProductImageVM>();
       
 

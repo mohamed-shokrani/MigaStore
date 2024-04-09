@@ -2,10 +2,10 @@
 using SharedProject.Models;
 using SharedProject.ViewModels.Brand;
 using SharedProject.ViewModels.Category;
+using SharedProject.ViewModels.ProductLongDescription;
 using SharedProject.ViewModels.ProductModel;
 using SharedProject.ViewModels.Seller;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 
 namespace SharedProject.ViewModels.Prodcuts;
 public class ProductViewModel
@@ -26,6 +26,7 @@ public class ProductViewModel
     public int Quantity { get; set; }
 
     public string MediumDescription { get; set; } = string.Empty;
+    public ProductLongDescriptionVM? LongDescription { get; set; } 
 
     public string CategoryName { get; set; } = string.Empty;
     public string SellerName { get; set; } = string.Empty;
@@ -40,6 +41,6 @@ public class ProductViewModel
     public IEnumerable<SellerVM>? Sellers { get; set; }
     public IEnumerable<ProductImageVM>  ? ProductImagesVM { get; set; }
     public IEnumerable<IFormFile> ProductImages { get; set; }
-
+    public IEnumerable<IFormFile>? ProductLongDescImages { get; set; }
 
 }

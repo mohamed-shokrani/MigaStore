@@ -22,9 +22,9 @@ public class Product
     public string MediumDescription { get; set; } = string.Empty;
     [Required]
 
-    public int CategoryId { get; set; }
     public long Views { get; set; }
-
+    public ProductLongDescription? ProductLongDescription { get; set; }
+    public int CategoryId { get; set; }
 
     public Category Category { get; set; }    
     public int BrandId { get; set; }
@@ -37,5 +37,5 @@ public class Product
     public ICollection<Seller> Sellers { get; set; }
     public ICollection<ProductImage> ProductImages  { get; set; }
 
-
+    
 }

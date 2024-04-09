@@ -5,6 +5,9 @@ using SharedProject.Models;
 using SharedProject.ViewModels.Brand;
 using SharedProject.ViewModels.Category;
 using SharedProject.ViewModels.Seller;
+using SharedProject.ViewModels.ProductLongDescription;
+using SharedProject.Settings;
+using SharedProject.ViewModels.ProductModel;
 namespace AdminDashboardProject.Controllers;
 [Route("products/")]
 public class ProductsController : Controller
@@ -45,30 +48,17 @@ public class ProductsController : Controller
         if (ModelState.IsValid)
         {
             string wwwrootPath = _webHostEnvironment.WebRootPath;
-            var images = await _unitOfWork.ImageRepository.CreateProductImages(productView.ProductImages, wwwrootPath);
-             var product = new Product
-            {
-                Name = productView.Name,
-                Model = productView.Model,
-                MediumDescription = productView.MediumDescription,
-                Description = productView.Description,
-                Price = productView.Price,
-                Quantity = productView.Quantity,
-                BrandId = productView.BrandId,
-                SellerId = productView.SellerId,
-                CategoryId = productView.CategoryId,
-                ProductImages = images.Select(x => new ProductImage
-                                    {
-                                        ImagePath = x.ImagePath,
-                                        IsMain = true
-                                    }).ToList()
-            };
+            var images         = await _unitOfWork.ImageRepository.CreateProductImages(productView.ProductImages, wwwrootPath, FileSetting.PrdouctImagePath);
+            var longDescImages = await _unitOfWork.ImageRepository.CreateProductImages(productView.ProductImages, wwwrootPath, FileSetting.ProductLongDescImagePath);
+
+            Product product = CreateProduct(productView, images, longDescImages);
             await _unitOfWork.ProductRepository.AddAsync(product);
             await _unitOfWork.SaveChangesAsync();
             return RedirectToAction("Index");
         }
         return View(productVM);
     }
+
 
     [Route("categories")]
 
@@ -77,6 +67,40 @@ public class ProductsController : Controller
         var cat =await _unitOfWork.Categories.GetAllAsync();
         return View(cat);
     }
+    private static Product CreateProduct(ProductViewModel productView, List<ProductImageVM> images, List<ProductImageVM> longDescImages)
+    {
+        var product  = new Product
+        {
+            Name = productView.Name,
+            Model = productView.Model,
+            MediumDescription = productView.MediumDescription,
+            Description = productView.Description,
+            Price = productView.Price,
+            Quantity = productView.Quantity,
+            BrandId = productView.BrandId,
+            SellerId = productView.SellerId,
+            CategoryId = productView.CategoryId,
+            ProductImages = images.Select(x => new ProductImage
+            {
+                ImagePath = x.ImagePath,
+                IsMain = true
+            }).ToList(),
+           
+        };
+        if (productView.LongDescription.FullDescription is not null)
+        {
+            product.ProductLongDescription = new ProductLongDescription
+            {
+                FullDescription = productView?.LongDescription?.FullDescription,
+                Images = longDescImages?.Select(i => new ProductLongDescImage
+                {
+                    ImagePath = i.ImagePath
+                }).ToList()
+            };
+        }
+        return product;
+    }
+
     private static ProductViewModel ProductMap(IReadOnlyCollection<Category> categories, IReadOnlyCollection<Brand> brands, IReadOnlyCollection<Seller> seller)
     {
         return new ProductViewModel

@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\assets\product\images\" />
+    <Folder Include="wwwroot\assets\product\longDescImg\" />
   </ItemGroup>
 
 </Project>
